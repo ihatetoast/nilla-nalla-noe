@@ -1,15 +1,10 @@
 document.addEventListener("DOMContentLoaded", ()=>{
-   console.log("app loaded"); 
-   function handleClick(){
-    console.log("boop");
-
-}
+// DOM VARS
 const squares = document.querySelectorAll(".square");
-console.log(squares)
-squares.forEach(square =>{
-    square.addEventListener("click", handleClick)
-})
-})
+const playerScore = document.getElementById("player");
+
+const arrLength = 9;
+const moves = new Array(arrLength).fill(null);
     // HELPER FCNS
     // iterate over array. array destr in each iteration. check for the el at all three indices are the same
     function checkWinner(arr){
@@ -28,6 +23,7 @@ squares.forEach(square =>{
             const[a, b, c] = winCombos[i]
             if(arr[a] && arr[a]===arr[b] && arr[a]===arr[c]){
                 //return if the winner is X or O (the one in a)
+                console.log("There is a winner")
                 return arr[a];
             }
         }
@@ -36,19 +32,39 @@ squares.forEach(square =>{
     // for end of game:
     function checkBoard(arr){
         let count = 0;
+        
         arr.forEach(el=>{
             if(el !== null){
                 count ++;
             }
+           
         });
+        console.log("checkboard fired "+ count)
         if (count === 9){
+            playerScore.innerText = "game over"
             return true;
         } else {
             return false;
         }
         
     }
+    let player = 'X'
+    function handleClick(){
+        const dataId =this.getAttribute("data-id");
+        moves[dataId] = player;
+        console.log(moves)
+        player = player === 'X' ? 'O' : 'X';
+        checkWinner(moves)
+        checkBoard(moves)
+        playerScore.innerText = player;
+
+    }
+
+    squares.forEach(square =>{
+        square.addEventListener("click", handleClick)
+    })
+
+
     
 
-
-
+})

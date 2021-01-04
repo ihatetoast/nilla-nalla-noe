@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", ()=>{
 // DOM VARS
 const squares = document.querySelectorAll(".square");
-const playerScore = document.getElementById("player");
-
+const currentPlayer = document.getElementById("player");
+const gameInfo = document.getElementById("gameInfo")
 const arrLength = 9;
 const moves = new Array(arrLength).fill(null);
     // HELPER FCNS
@@ -23,7 +23,10 @@ const moves = new Array(arrLength).fill(null);
             const[a, b, c] = winCombos[i]
             if(arr[a] && arr[a]===arr[b] && arr[a]===arr[c]){
                 //return if the winner is X or O (the one in a)
-                console.log("There is a winner")
+                squares.forEach(square =>{
+                    square.removeEventListener("click", handleClick); 
+                })
+                
                 return arr[a];
             }
         }
@@ -39,10 +42,11 @@ const moves = new Array(arrLength).fill(null);
             }
            
         });
-        console.log("checkboard fired "+ count)
         if (count === 9){
-            playerScore.innerText = "game over"
-            return true;
+            squares.forEach(square =>{
+                square.removeEventListener("click", handleClick); 
+            });
+            gameInfo.innerText = `Game over. It's a draw!`;
         } else {
             return false;
         }
@@ -52,11 +56,24 @@ const moves = new Array(arrLength).fill(null);
     function handleClick(){
         const dataId =this.getAttribute("data-id");
         moves[dataId] = player;
-        console.log(moves)
-        player = player === 'X' ? 'O' : 'X';
-        checkWinner(moves)
+
+        const win = checkWinner(moves);
+        if(player === 'X'){
+            this.classList.add("player-x")
+            player = "O"
+        } else {
+            this.classList.add("player-o")
+            player = "X"
+        }
         checkBoard(moves)
-        playerScore.innerText = player;
+        if(win){
+            winner = player === "X" ? "O" : "X"
+            gameInfo.innerText = `Game over! ${winner} won.`;
+
+        } else {
+            currentPlayer.innerText = player;
+        }
+        
 
     }
 

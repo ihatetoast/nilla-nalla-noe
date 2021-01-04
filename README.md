@@ -12,4 +12,4 @@ CSS
 Images: my own using Procreate
 JavaScript
 
-[Vanilla Tic Tac Toe](nillanallanoe.png)
+![Vanilla Tic Tac Toe](nillanallanoe.png)
